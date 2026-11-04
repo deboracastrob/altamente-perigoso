@@ -1,0 +1,990 @@
+```html
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Operação: Thainara</title>
+
+<style>
+:root {
+    --bg: #080b16;
+    --panel: #11182b;
+    --green: #67ffb2;
+    --pink: #ff5da2;
+    --text: #edf2ff;
+    --muted: #9ba8c7;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    background: radial-gradient(circle at top, #182448 0, #080b16 55%);
+    color: var(--text);
+    font-family: Arial, sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 18px;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background: repeating-linear-gradient(
+        0deg,
+        transparent 0 3px,
+        rgba(255,255,255,.025) 4px
+    );
+}
+
+.app {
+    width: min(720px, 100%);
+    position: relative;
+}
+
+.top {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    align-items: center;
+    font-size: .78rem;
+    color: var(--green);
+    letter-spacing: 2px;
+    margin-bottom: 14px;
+}
+
+.tag {
+    border: 1px solid #315c60;
+    padding: 6px 10px;
+    border-radius: 6px;
+}
+
+.card {
+    background: rgba(17,24,43,.94);
+    border: 1px solid #293957;
+    border-radius: 18px;
+    padding: clamp(22px, 5vw, 40px);
+    min-height: 420px;
+    box-shadow: 0 20px 70px #0008;
+    overflow: hidden;
+}
+
+h1, h2 {
+    line-height: 1.15;
+    margin: 10px 0 18px;
+}
+
+h1 {
+    font-size: clamp(2rem, 6vw, 3.2rem);
+}
+
+h2 {
+    font-size: clamp(1.5rem, 4vw, 2.2rem);
+}
+
+p {
+    line-height: 1.65;
+    color: #d2dcf4;
+}
+
+.small {
+    color: var(--muted);
+    font-size: .88rem;
+}
+
+button {
+    border: 0;
+    border-radius: 10px;
+    padding: 13px 18px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: transform .15s;
+}
+
+button:hover {
+    transform: translateY(-2px);
+}
+
+.primary {
+    background: var(--green);
+    color: #06120d;
+}
+
+.secondary {
+    background: #25324c;
+    color: var(--text);
+    border: 1px solid #405171;
+}
+
+.buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 24px;
+}
+
+.feedback {
+    margin-top: 18px;
+    min-height: 28px;
+    color: var(--pink);
+    font-weight: bold;
+}
+
+.progress {
+    height: 6px;
+    background: #26334e;
+    border-radius: 10px;
+    margin: 20px 0 28px;
+    overflow: hidden;
+}
+
+.progress span {
+    display: block;
+    height: 100%;
+    background: var(--green);
+    width: 10%;
+    transition: width .3s;
+}
+
+.screen {
+    display: none;
+    animation: fade .35s ease;
+}
+
+.screen.active {
+    display: block;
+}
+
+@keyframes fade {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+    to {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+/* TESTE DE HUMANIDADE */
+
+.emoji-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.emoji {
+    font-size: 2.5rem;
+    background: #202c45;
+    border: 2px solid transparent;
+    padding: 18px;
+    border-radius: 12px;
+}
+
+.emoji.selected {
+    border-color: var(--green);
+    background: #14352e;
+}
+
+/* CORAÇÃO */
+
+.heart-area {
+    height: 180px;
+    position: relative;
+    border: 1px dashed #405171;
+    border-radius: 12px;
+    margin-top: 20px;
+}
+
+.heart {
+    position: absolute;
+    font-size: 2.2rem;
+    background: none;
+    padding: 0;
+}
+
+/* CARREGAMENTO */
+
+.loadbar {
+    height: 18px;
+    background: #26334e;
+    border-radius: 20px;
+    overflow: hidden;
+    margin: 20px 0;
+}
+
+.loadbar div {
+    height: 100%;
+    width: 0;
+    background: linear-gradient(90deg, var(--green), #4bb7ff);
+}
+
+/* BOTÃO FUJÃO */
+
+.run-area {
+    height: 160px;
+    position: relative;
+    margin-top: 20px;
+    background: #0c1222;
+    border-radius: 12px;
+}
+
+#runBtn {
+    position: absolute;
+    left: 35%;
+    top: 40%;
+}
+
+/* PRESENTE */
+
+.box {
+    font-size: 5rem;
+    text-align: center;
+    margin: 20px 0;
+}
+
+/* TELA FINAL */
+
+.final {
+    background: linear-gradient(135deg, #2c1642, #101a36);
+    text-align: center;
+}
+
+.final h1 {
+    color: #ff8fc4;
+}
+
+.photo-grid {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin: 20px 0;
+}
+
+.photo-grid img {
+    width: 140px;
+    height: 140px;
+    object-fit: cover;
+    border-radius: 14px;
+    border: 2px solid #ffffff33;
+}
+
+.hidden {
+    display: none !important;
+}
+
+footer {
+    margin-top: 12px;
+    text-align: center;
+    color: #6e7d9f;
+    font-size: .75rem;
+}
+
+#confetti {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 20;
+}
+
+@media(max-width:480px) {
+    .card {
+        min-height: unset;
+    }
+
+    .emoji {
+        padding: 12px;
+        font-size: 2rem;
+    }
+
+    .buttons button {
+        width: 100%;
+    }
+
+    .top {
+        letter-spacing: 1px;
+        font-size: .68rem;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<canvas id="confetti"></canvas>
+
+<div class="app">
+
+    <div class="top">
+        <span>◈ OPERAÇÃO: THAINARA</span>
+        <span class="tag">PROTOCOLO ANIVERSÁRIO 2026</span>
+    </div>
+
+    <div class="card">
+
+        <div class="small" id="screenLabel">
+            ARQUIVO CONFIDENCIAL // 01
+        </div>
+
+        <div class="progress">
+            <span id="progress"></span>
+        </div>
+
+        <!-- TELA 1 -->
+
+        <section class="screen active" id="s1">
+
+            <h1>Você foi selecionada.</h1>
+
+            <p>
+                Thainara, você foi selecionada para receber uma
+                mensagem extremamente importante.
+                Mas existem protocolos de segurança.
+            </p>
+
+            <p class="small">
+                Atenção: continuar pode causar curiosidade,
+                irritação e questionamentos sobre quem criou isso.
+            </p>
+
+            <div class="buttons">
+
+                <button class="primary" onclick="next(2)">
+                    ACEITAR MISSÃO
+                </button>
+
+                <button class="secondary" onclick="noMission()">
+                    Não quero
+                </button>
+
+            </div>
+
+            <div class="feedback" id="f1"></div>
+
+        </section>
+
+        <!-- TELA 2 -->
+
+        <section class="screen" id="s2">
+
+            <h2>Confirme sua identidade.</h2>
+
+            <p>
+                Para continuar, precisamos confirmar
+                que você é realmente a Thainara.
+            </p>
+
+            <div class="buttons">
+
+                <button class="secondary" onclick="identity()">
+                    Sou a Thainara.
+                </button>
+
+                <button class="secondary" onclick="identity()">
+                    Sou a Beyoncé.
+                </button>
+
+                <button class="secondary" onclick="identity()">
+                    Sou um espírito livre.
+                </button>
+
+            </div>
+
+            <div class="feedback" id="f2"></div>
+
+        </section>
+
+        <!-- TELA 3 -->
+
+        <section class="screen" id="s3">
+
+            <h2>Teste de humanidade</h2>
+
+            <p>
+                Selecione todas as imagens que contenham felicidade.
+            </p>
+
+            <div class="emoji-grid">
+
+                <button class="emoji" onclick="toggleEmoji(this)">😊</button>
+                <button class="emoji" onclick="toggleEmoji(this)">😭</button>
+                <button class="emoji" onclick="toggleEmoji(this)">🥰</button>
+
+                <button class="emoji" onclick="toggleEmoji(this)">😈</button>
+                <button class="emoji" onclick="toggleEmoji(this)">😂</button>
+                <button class="emoji" onclick="toggleEmoji(this)">🤡</button>
+
+            </div>
+
+            <div class="buttons">
+
+                <button class="primary" onclick="checkEmoji()">
+                    CONFIRMAR SELEÇÃO
+                </button>
+
+            </div>
+
+            <div class="feedback" id="f3"></div>
+
+        </section>
+
+        <!-- TELA 4 -->
+
+        <section class="screen" id="s4">
+
+            <h2>Encontre o coração.</h2>
+
+            <p>
+                O sistema precisa confirmar que você possui sentimentos.
+                Clique no coração 3 vezes.
+            </p>
+
+            <div class="heart-area" id="heartArea">
+
+                <button class="heart" id="heart" onclick="hitHeart()">
+                    ❤️
+                </button>
+
+            </div>
+
+            <div class="feedback" id="f4">
+                Cliques registrados: 0/3
+            </div>
+
+        </section>
+
+        <!-- TELA 5 -->
+
+        <section class="screen" id="s5">
+
+            <h2>Preparando sua surpresa...</h2>
+
+            <p>
+                Não feche esta janela.
+                O sistema está trabalhando muito (mentira).
+            </p>
+
+            <div class="loadbar">
+                <div id="loadFill"></div>
+            </div>
+
+            <div class="feedback" id="f5">
+                Carregando: 0%
+            </div>
+
+        </section>
+
+        <!-- TELA 6 -->
+
+        <section class="screen" id="s6">
+
+            <h2>Erro inesperado.</h2>
+
+            <p>
+                Detectamos excesso de curiosidade.
+                Para continuar, clique no botão abaixo.
+            </p>
+
+            <div class="run-area" id="runArea">
+
+                <button class="primary" id="runBtn" onclick="caught()">
+                    CONTINUAR
+                </button>
+
+            </div>
+
+            <div class="feedback" id="f6"></div>
+
+        </section>
+
+        <!-- TELA 7 -->
+
+        <section class="screen" id="s7">
+
+            <h2>Parabéns! Você ganhou!</h2>
+
+            <p>
+                Você acaba de desbloquear seu presente exclusivo.
+            </p>
+
+            <div class="box">🎁</div>
+
+            <p><b>O presente é a experiência.</b></p>
+
+            <p class="small">
+                Obrigada pela participação.
+                Não aceitamos reclamações nem devoluções.
+            </p>
+
+            <div class="buttons">
+
+                <button class="primary" onclick="next(8)">
+                    ISSO É UMA PIADA? →
+                </button>
+
+            </div>
+
+        </section>
+
+        <!-- TELA 8 -->
+
+        <section class="screen" id="s8">
+
+            <h2>Pesquisa de satisfação</h2>
+
+            <p>
+                De 1 a 10, quanto você está arrependida
+                de ter começado?
+            </p>
+
+            <div class="buttons" id="ratings"></div>
+
+            <div class="feedback" id="f8"></div>
+
+        </section>
+
+        <!-- TELA 9 -->
+
+        <section class="screen" id="s9">
+
+            <h2>Uma última pergunta.</h2>
+
+            <p>
+                Thainara, depois de tudo isso,
+                você ainda quer descobrir o que está esperando por você?
+            </p>
+
+            <p class="small">
+                Esta etapa não contém pegadinhas.
+                (O sistema não garante.)
+            </p>
+
+            <div class="buttons">
+
+                <button class="primary" onclick="finalScreen()">
+                    Quero.
+                </button>
+
+            </div>
+
+        </section>
+
+        <!-- TELA 10 -->
+
+        <section class="screen final" id="s10">
+
+            <div class="small">
+                PROTOCOLO CONCLUÍDO // ACESSO LIBERADO
+            </div>
+
+            <h1>Feliz aniversário, Thainara! ❤️</h1>
+
+            <p>
+                Depois de tantos testes,
+                você finalmente chegou à parte que importa.
+            </p>
+
+            <!--
+            PARA ADICIONAR FOTOS:
+            coloque as fotos no repositório GitHub.
+            Depois retire a classe "hidden".
+            -->
+
+            <div class="photo-grid hidden" id="photos">
+
+                <img src="foto1.jpg" alt="Foto especial">
+                <img src="foto2.jpg" alt="Foto especial">
+
+            </div>
+
+            <p id="letter">
+                [ESCREVA AQUI SUA MENSAGEM PERSONALIZADA PARA A THAINARA.]
+            </p>
+
+            <p>
+                Espero que seu dia seja tão especial quanto você.
+                Obrigada por existir e por fazer parte da minha vida. ❤️
+            </p>
+
+            <div class="buttons" style="justify-content:center">
+
+                <button class="secondary" onclick="celebrate()">
+                    MAIS CONFETES!
+                </button>
+
+            </div>
+
+            <!--
+            MÚSICA OPCIONAL:
+
+            Coloque musica.mp3 no repositório e retire
+            os comentários abaixo.
+
+            <audio controls autoplay loop>
+                <source src="musica.mp3" type="audio/mpeg">
+            </audio>
+            -->
+
+        </section>
+
+    </div>
+
+    <footer>
+        SISTEMA DE ANIVERSÁRIO • acesso monitorado • sua paciência foi registrada
+    </footer>
+
+</div>
+
+<script>
+
+let current = 1;
+let heartClicks = 0;
+let runCount = 0;
+let loadTimer;
+
+// TROCAR DE TELA
+
+function show(n) {
+
+    document.querySelectorAll(".screen").forEach(screen => {
+        screen.classList.remove("active");
+    });
+
+    document.getElementById("s" + n).classList.add("active");
+
+    current = n;
+
+    document.getElementById("screenLabel").textContent =
+        "ARQUIVO CONFIDENCIAL // " + String(n).padStart(2, "0");
+
+    document.getElementById("progress").style.width = (n * 10) + "%";
+
+}
+
+// AVANÇAR
+
+function next(n) {
+
+    show(n);
+
+    if (n === 5) startLoading();
+
+    if (n === 6) setupRunner();
+
+    if (n === 8) makeRatings();
+
+}
+
+// TELA 1
+
+function noMission() {
+
+    document.getElementById("f1").textContent =
+        "Não existe essa opção. Você já foi selecionada.";
+
+}
+
+// TELA 2
+
+function identity() {
+
+    document.getElementById("f2").textContent =
+        "Identidade questionável, mas aceita.";
+
+    setTimeout(() => next(3), 1100);
+
+}
+
+// TELA 3
+
+function toggleEmoji(element) {
+
+    element.classList.toggle("selected");
+
+}
+
+function checkEmoji() {
+
+    let chosen = document.querySelectorAll(".emoji.selected").length;
+
+    if (chosen < 2) {
+
+        document.getElementById("f3").textContent =
+            "Você está com preguiça até de sentir felicidade? Selecione mais algumas.";
+
+        return;
+
+    }
+
+    document.getElementById("f3").textContent =
+        "Resultado: felicidade detectada. Paciência não detectada.";
+
+    setTimeout(() => next(4), 1300);
+
+}
+
+// TELA 4
+
+function hitHeart() {
+
+    heartClicks++;
+
+    document.getElementById("f4").textContent =
+        "Cliques registrados: " + heartClicks + "/3";
+
+    let area = document.getElementById("heartArea");
+    let heart = document.getElementById("heart");
+
+    heart.style.left =
+        Math.random() * (area.clientWidth - 50) + "px";
+
+    heart.style.top =
+        Math.random() * (area.clientHeight - 50) + "px";
+
+    if (heartClicks >= 3) {
+
+        document.getElementById("f4").textContent =
+            "Você realmente está levando isso a sério. Interessante.";
+
+        setTimeout(() => next(5), 1200);
+
+    }
+
+}
+
+// TELA 5
+
+function startLoading() {
+
+    let val = 0;
+
+    let fill = document.getElementById("loadFill");
+    let label = document.getElementById("f5");
+
+    clearInterval(loadTimer);
+
+    loadTimer = setInterval(() => {
+
+        val += Math.random() * 5 + 1;
+
+        if (val >= 99) {
+
+            val = 99;
+
+            fill.style.width = "99%";
+
+            label.textContent = "Carregando: 99%";
+
+            clearInterval(loadTimer);
+
+            setTimeout(() => {
+
+                val = 12;
+
+                fill.style.width = "12%";
+
+                label.textContent =
+                    "Carregando: 12% — Seu nível de ansiedade foi atualizado com sucesso.";
+
+                setTimeout(() => next(6), 2300);
+
+            }, 1000);
+
+        } else {
+
+            fill.style.width = val + "%";
+
+            label.textContent =
+                "Carregando: " + Math.floor(val) + "%";
+
+        }
+
+    }, 180);
+
+}
+
+// TELA 6
+
+function setupRunner() {
+
+    let btn = document.getElementById("runBtn");
+
+    btn.onmouseenter = () => moveButton();
+
+    btn.ontouchstart = (event) => {
+
+        event.preventDefault();
+
+        moveButton();
+
+    };
+
+}
+
+function moveButton() {
+
+    let area = document.getElementById("runArea");
+    let btn = document.getElementById("runBtn");
+
+    runCount++;
+
+    btn.style.left =
+        Math.random() * (area.clientWidth - btn.offsetWidth) + "px";
+
+    btn.style.top =
+        Math.random() * (area.clientHeight - btn.offsetHeight) + "px";
+
+    if (runCount >= 4) {
+
+        btn.textContent = "TENTA DE NOVO";
+
+        document.getElementById("f6").textContent =
+            "O botão está colaborando menos que você esperava.";
+
+    }
+
+}
+
+function caught() {
+
+    document.getElementById("f6").textContent =
+        "Era só um teste. Você passou. Infelizmente.";
+
+    setTimeout(() => next(7), 1200);
+
+}
+
+// TELA 8
+
+function makeRatings() {
+
+    let ratings = document.getElementById("ratings");
+
+    if (ratings.children.length) return;
+
+    for (let i = 1; i <= 10; i++) {
+
+        let button = document.createElement("button");
+
+        button.className = "secondary";
+
+        button.textContent = i;
+
+        button.onclick = () => {
+
+            document.getElementById("f8").textContent =
+                "Sua opinião é muito importante para nós. Não faremos nada a respeito.";
+
+            setTimeout(() => next(9), 1400);
+
+        };
+
+        ratings.appendChild(button);
+
+    }
+
+}
+
+// TELA 10
+
+function finalScreen() {
+
+    show(10);
+
+    celebrate();
+
+}
+
+// CONFETES
+
+function celebrate() {
+
+    let canvas = document.getElementById("confetti");
+
+    let ctx = canvas.getContext("2d");
+
+    canvas.width = innerWidth;
+    canvas.height = innerHeight;
+
+    let pieces = Array.from({ length: 160 }, () => ({
+
+        x: Math.random() * canvas.width,
+        y: -Math.random() * canvas.height,
+        s: 3 + Math.random() * 6,
+        v: 2 + Math.random() * 5,
+        a: Math.random() * 6
+
+    }));
+
+    let frames = 0;
+
+    function draw() {
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        pieces.forEach(piece => {
+
+            piece.y += piece.v;
+            piece.x += Math.sin(piece.a) * 2;
+            piece.a += 0.04;
+
+            ctx.fillStyle = [
+                "#67ffb2",
+                "#ff5da2",
+                "#ffd166",
+                "#72c7ff",
+                "#fff"
+            ][Math.floor(Math.random() * 5)];
+
+            ctx.fillRect(
+                piece.x,
+                piece.y,
+                piece.s,
+                piece.s
+            );
+
+        });
+
+        frames++;
+
+        if (frames < 180) {
+
+            requestAnimationFrame(draw);
+
+        } else {
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        }
+
+    }
+
+    draw();
+
+}
+
+window.addEventListener("resize", () => {
+
+    let canvas = document.getElementById("confetti");
+
+    canvas.width = innerWidth;
+    canvas.height = innerHeight;
+
+});
+
+</script>
+
+</body>
+</html>
+```
