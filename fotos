@@ -1,12 +1,8 @@
-altamente-perigoso/
-│
-├── index.html
-│
-└── fotos/
-    ├── teste1.jpg
-    ├── teste2.jpg
-    ├── teste3.jpg
-    ├── teste4.jpg
-    ├── teste5.jpg
-    ├── teste6.jpg
-    └── foto-final.jpg
+fotos/
+├── photo1.jpg
+├── photo-2.jpg
+├── photo-3.jpg
+├── photo-4.jpg
+├── photo-5.jpg
+├── photo-6.jpg
+└── photo-final.jpg
