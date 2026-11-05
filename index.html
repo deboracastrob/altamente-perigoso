@@ -1,4 +1,3 @@
-```html
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -178,22 +177,54 @@ button:hover {
 
 .emoji-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 12px;
     margin-top: 20px;
 }
 
-.emoji {
-    font-size: 2.5rem;
+.photo-choice {
+    position: relative;
+    display: block;
+    padding: 0;
+    overflow: hidden;
+    aspect-ratio: 1 / 1;
     background: #202c45;
-    border: 2px solid transparent;
-    padding: 18px;
+    border: 2px solid #405171;
     border-radius: 12px;
 }
 
-.emoji.selected {
-    border-color: var(--green);
+.photo-choice img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform .2s, filter .2s;
+}
+
+.photo-choice:hover img {
+    transform: scale(1.04);
+}
+
+.photo-choice.selected {
+    border: 3px solid var(--green);
     background: #14352e;
+    box-shadow: 0 0 18px #67ffb255;
+}
+
+.photo-choice.selected::after {
+    content: "✓";
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 28px;
+    height: 28px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: var(--green);
+    color: #06120d;
+    font-weight: bold;
+    box-shadow: 0 2px 8px #0008;
 }
 
 /* CORAÇÃO */
@@ -267,17 +298,17 @@ button:hover {
 .photo-grid {
     display: flex;
     justify-content: center;
-    flex-wrap: wrap;
-    gap: 12px;
     margin: 20px 0;
 }
 
 .photo-grid img {
-    width: 140px;
-    height: 140px;
+    width: min(100%, 420px);
+    height: 280px;
     object-fit: cover;
-    border-radius: 14px;
-    border: 2px solid #ffffff33;
+    object-position: center;
+    border-radius: 16px;
+    border: 2px solid var(--pink);
+    box-shadow: 0 0 24px #ff5da244;
 }
 
 .hidden {
@@ -303,9 +334,12 @@ footer {
         min-height: unset;
     }
 
-    .emoji {
-        padding: 12px;
-        font-size: 2rem;
+    .emoji-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .photo-grid img {
+        height: 230px;
     }
 
     .buttons button {
@@ -417,13 +451,26 @@ footer {
 
             <div class="emoji-grid">
 
-                <button class="emoji" onclick="toggleEmoji(this)">😊</button>
-                <button class="emoji" onclick="toggleEmoji(this)">😭</button>
-                <button class="emoji" onclick="toggleEmoji(this)">🥰</button>
-
-                <button class="emoji" onclick="toggleEmoji(this)">😈</button>
-                <button class="emoji" onclick="toggleEmoji(this)">😂</button>
-                <button class="emoji" onclick="toggleEmoji(this)">🤡</button>
+                <!-- Troque os arquivos abaixo pelas fotos de vocês.
+                     Deixe as imagens dentro da pasta "fotos" do site. -->
+                <button class="photo-choice" onclick="toggleEmoji(this)" aria-label="Selecionar foto 1">
+                    <img src="fotos/teste1.jpg" alt="Foto de vocês 1">
+                </button>
+                <button class="photo-choice" onclick="toggleEmoji(this)" aria-label="Selecionar foto 2">
+                    <img src="fotos/teste2.jpg" alt="Foto de vocês 2">
+                </button>
+                <button class="photo-choice" onclick="toggleEmoji(this)" aria-label="Selecionar foto 3">
+                    <img src="fotos/teste3.jpg" alt="Foto de vocês 3">
+                </button>
+                <button class="photo-choice" onclick="toggleEmoji(this)" aria-label="Selecionar foto 4">
+                    <img src="fotos/teste4.jpg" alt="Foto de vocês 4">
+                </button>
+                <button class="photo-choice" onclick="toggleEmoji(this)" aria-label="Selecionar foto 5">
+                    <img src="fotos/teste5.jpg" alt="Foto de vocês 5">
+                </button>
+                <button class="photo-choice" onclick="toggleEmoji(this)" aria-label="Selecionar foto 6">
+                    <img src="fotos/teste6.jpg" alt="Foto de vocês 6">
+                </button>
 
             </div>
 
@@ -601,11 +648,9 @@ footer {
             Depois retire a classe "hidden".
             -->
 
-            <div class="photo-grid hidden" id="photos">
-
-                <img src="foto1.jpg" alt="Foto especial">
-                <img src="foto2.jpg" alt="Foto especial">
-
+            <div class="photo-grid" id="photos">
+                <!-- Coloque sua foto favorita na pasta "fotos" e chame-a de foto-final.jpg -->
+                <img src="fotos/foto-final.jpg" alt="Uma foto especial de vocês">
             </div>
 
             <p id="letter">
@@ -716,7 +761,7 @@ function toggleEmoji(element) {
 
 function checkEmoji() {
 
-    let chosen = document.querySelectorAll(".emoji.selected").length;
+    let chosen = document.querySelectorAll(".photo-choice.selected").length;
 
     if (chosen < 2) {
 
@@ -987,4 +1032,3 @@ window.addEventListener("resize", () => {
 
 </body>
 </html>
-```
